@@ -14,8 +14,7 @@ def process(a):
     if a.backend == 'cpp':
         from .native import composite_cpp, _library
         _library()  # fail before processing if the native build is missing
-        if not np.isfinite(a.strength) or not 0 <= a.strength <= 1: raise ValueError("strength must be in [0,1]")
-    blend = composite_cpp
+        blend = composite_cpp
     cap=cv2.VideoCapture(a.input)
     ok,first=cap.read()
     if not ok: raise ValueError('cannot read input video')
