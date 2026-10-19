@@ -1,0 +1,50 @@
+{
+  "compositing_backend": "cpp",
+  "frames": 20,
+  "resolution": [
+    320,
+    320
+  ],
+  "source_fps": 10.0,
+  "warmup_frames": 3,
+  "ratio": 0.5,
+  "independent_frames": false,
+  "scene_cut_resets": 0,
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "processor": "x86_64",
+  "cpu_threads": 2,
+  "model_bytes": 14975696,
+  "model_sha256": "88d4531297118f595bf2fd60f6f566aec2e559393802d1f436c380f0cbbd2828",
+  "sampled_peak_process_rss_bytes": null,
+  "timing_ms": {
+    "decode": {
+      "p50": 1.6847380002218415,
+      "p95": 6.085349099748787
+    },
+    "preprocess": {
+      "p50": 0.2449090002301091,
+      "p95": 1.63882200063199
+    },
+    "inference": {
+      "p50": 75.52791900025113,
+      "p95": 700.0889606499189
+    },
+    "composite": {
+      "p50": 15.728624000530544,
+      "p95": 47.32012044951273
+    },
+    "write": {
+      "p50": 1.1589534997256123,
+      "p95": 2.277939850137045
+    },
+    "pipeline": {
+      "p50": 97.8929474999859,
+      "p95": 727.287820599486
+    }
+  },
+  "notes": [
+    "CPU only. RSS sampled after each frame, not true peak allocation.",
+    "First frame decode excluded. Model load and warmup excluded. Encoder final flush excluded.",
+    "Video output is silent. Blur is mask-based, not depth-based. No accuracy claim without ground truth."
+  ]
+}

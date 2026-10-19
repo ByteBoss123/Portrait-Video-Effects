@@ -1,0 +1,11 @@
+__pycache__/
+.pytest_cache/
+.venv/
+*.so
+*.dll
+*.obj
+*.lib
+*.exp
+models/
+results/*.mp4
+results/alpha/

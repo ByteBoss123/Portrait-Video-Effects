@@ -1,0 +1,60 @@
+{
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "numpy": "2.3.5",
+  "iterations": 60,
+  "seed": 42,
+  "scope": "Synthetic alpha compositing only; includes conversion, allocation, ctypes. Excludes blur, inference and video IO. Not Windows or iPhone performance.",
+  "results": [
+    {
+      "resolution": [
+        320,
+        320
+      ],
+      "max_abs_error": 8.577286247923865e-08,
+      "timing_ms": {
+        "numpy": {
+          "p50": 5.9476905,
+          "p95": 10.600037699999998
+        },
+        "cpp": {
+          "p50": 2.800606,
+          "p95": 5.7984329
+        }
+      }
+    },
+    {
+      "resolution": [
+        480,
+        854
+      ],
+      "max_abs_error": 8.493939529508054e-08,
+      "timing_ms": {
+        "numpy": {
+          "p50": 28.5889715,
+          "p95": 36.660283799999995
+        },
+        "cpp": {
+          "p50": 11.1524815,
+          "p95": 17.14590495
+        }
+      }
+    },
+    {
+      "resolution": [
+        1280,
+        720
+      ],
+      "max_abs_error": 8.777111881741462e-08,
+      "timing_ms": {
+        "numpy": {
+          "p50": 32.63113,
+          "p95": 81.4659149499999
+        },
+        "cpp": {
+          "p50": 13.8123475,
+          "p95": 19.02395835
+        }
+      }
+    }
+  ]
+}
