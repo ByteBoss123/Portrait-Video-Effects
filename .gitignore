@@ -9,3 +9,8 @@ __pycache__/
 models/
 results/*.mp4
 results/alpha/
+data/
+*.pt
+*.mlpackage/
+results/training*/
+results/reconstruction*/

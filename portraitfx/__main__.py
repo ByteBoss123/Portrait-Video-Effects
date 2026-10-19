@@ -9,11 +9,13 @@ def process(a):
     if Path(a.input).resolve()==Path(a.output).resolve():
         raise ValueError('input and output must differ')
     if a.width < 32 or a.warmup < 0: raise ValueError('width >=32 and warmup >=0 required')
+    if not np.isfinite(a.strength) or not 0 <= a.strength <= 1: raise ValueError("strength must be in [0,1]")
     blend = composite
     if a.backend == 'cpp':
         from .native import composite_cpp, _library
         _library()  # fail before processing if the native build is missing
-        blend = composite_cpp
+        if not np.isfinite(a.strength) or not 0 <= a.strength <= 1: raise ValueError("strength must be in [0,1]")
+    blend = composite_cpp
     cap=cv2.VideoCapture(a.input)
     ok,first=cap.read()
     if not ok: raise ValueError('cannot read input video')
@@ -50,7 +52,7 @@ def process(a):
             t2=time.perf_counter(); fgr,alpha=model.predict(frame,a.independent)
             t3=time.perf_counter()
             background=bg if bg is not None else background_blur(frame,alpha)
-            output=(blend(fgr,alpha,background)*255).round().astype('uint8')
+            output=(blend(fgr,alpha,background,a.strength)*255).round().astype('uint8')
             t4=time.perf_counter(); writer.write(output)
             if a.alpha_dir:
                 cv2.imwrite(str(Path(a.alpha_dir)/f'{count:06d}.png'),(alpha*65535).round().astype('uint16'))
@@ -65,7 +67,7 @@ def process(a):
     finally:
         cap.release(); writer.release()
     stats=np.array(timings)
-    report={'compositing_backend':a.backend,'frames':count,'resolution':[width,height],'source_fps':fps,'warmup_frames':a.warmup,
+    report={'effect_strength':a.strength,'compositing_backend':a.backend,'frames':count,'resolution':[width,height],'source_fps':fps,'warmup_frames':a.warmup,
         'ratio':a.ratio,'independent_frames':a.independent,'scene_cut_resets':cuts,
         'platform':platform.platform(),'processor':platform.processor(),'cpu_threads':a.threads,
         'model_bytes':Path(a.model).stat().st_size,'model_sha256':hashlib.sha256(Path(a.model).read_bytes()).hexdigest(),
@@ -99,6 +101,7 @@ def main():
     parser=argparse.ArgumentParser(description='Portrait video effects: CPU RVM inference and alpha evaluation')
     sub=parser.add_subparsers(dest='command',required=True)
     p=sub.add_parser('process')
+    p.add_argument('--strength',type=float,default=1.0)
     p.add_argument('--backend', choices=['numpy','cpp'], default='numpy')
     for key in ['input','model','output']: p.add_argument('--'+key,required=True)
     p.add_argument('--measure-memory',action='store_true',help='Enable process RSS sampling on a host with a reliable process namespace'); p.add_argument('--background'); p.add_argument('--alpha-dir'); p.add_argument('--report',default='results/benchmark.json')

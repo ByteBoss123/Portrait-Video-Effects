@@ -1,0 +1,133 @@
+{
+  "synthetic": true,
+  "task": "small RGB-to-alpha CNN trained from scratch, not RVM",
+  "seed": 42,
+  "config": {
+    "manifest": "data/synthetic/manifest.json",
+    "output": "results/training_demo_mse",
+    "epochs": 20,
+    "size": 64,
+    "batch": 8,
+    "seed": 42,
+    "device": "cpu"
+  },
+  "split_counts": {
+    "train": 32,
+    "val": 8,
+    "test": 8
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_mse": 0.20983528345823288,
+      "val_mae": 0.43328768014907837
+    },
+    {
+      "epoch": 2,
+      "train_mse": 0.18019962310791016,
+      "val_mae": 0.3895474374294281
+    },
+    {
+      "epoch": 3,
+      "train_mse": 0.14734722673892975,
+      "val_mae": 0.3357909917831421
+    },
+    {
+      "epoch": 4,
+      "train_mse": 0.11127558723092079,
+      "val_mae": 0.2792431116104126
+    },
+    {
+      "epoch": 5,
+      "train_mse": 0.07471693120896816,
+      "val_mae": 0.21970537304878235
+    },
+    {
+      "epoch": 6,
+      "train_mse": 0.04860854335129261,
+      "val_mae": 0.16134566068649292
+    },
+    {
+      "epoch": 7,
+      "train_mse": 0.031104160007089376,
+      "val_mae": 0.12759816646575928
+    },
+    {
+      "epoch": 8,
+      "train_mse": 0.019397419411689043,
+      "val_mae": 0.09001664072275162
+    },
+    {
+      "epoch": 9,
+      "train_mse": 0.010709908790886402,
+      "val_mae": 0.06132528930902481
+    },
+    {
+      "epoch": 10,
+      "train_mse": 0.00531879102345556,
+      "val_mae": 0.04472741112112999
+    },
+    {
+      "epoch": 11,
+      "train_mse": 0.0026394990272819996,
+      "val_mae": 0.034392062574625015
+    },
+    {
+      "epoch": 12,
+      "train_mse": 0.001575660629896447,
+      "val_mae": 0.025237593799829483
+    },
+    {
+      "epoch": 13,
+      "train_mse": 0.0010922360816039145,
+      "val_mae": 0.020184796303510666
+    },
+    {
+      "epoch": 14,
+      "train_mse": 0.00089043534535449,
+      "val_mae": 0.01808924973011017
+    },
+    {
+      "epoch": 15,
+      "train_mse": 0.0007680783164687455,
+      "val_mae": 0.016831502318382263
+    },
+    {
+      "epoch": 16,
+      "train_mse": 0.0007136267377063632,
+      "val_mae": 0.015666112303733826
+    },
+    {
+      "epoch": 17,
+      "train_mse": 0.000683974867570214,
+      "val_mae": 0.01501677930355072
+    },
+    {
+      "epoch": 18,
+      "train_mse": 0.0006696191703667864,
+      "val_mae": 0.014601873233914375
+    },
+    {
+      "epoch": 19,
+      "train_mse": 0.0006747578299837187,
+      "val_mae": 0.014438493177294731
+    },
+    {
+      "epoch": 20,
+      "train_mse": 0.0006540141621371731,
+      "val_mae": 0.013974671252071857
+    }
+  ],
+  "untrained_test": {
+    "mae": 0.4648302495479584,
+    "mse": 0.2195734977722168
+  },
+  "train_mean_baseline_test_mae": 0.21301981806755066,
+  "selected_model_test": {
+    "mae": 0.014413676224648952,
+    "mse": 0.0006107332883402705
+  },
+  "manifest_sha256": "e8ca391a558abd482900b24bbd212bfc4c481d50c466e3e09238b4caacb41c1c",
+  "torch_version": "2.14.1+cpu",
+  "note": "Test metrics do not select checkpoints. Synthetic results are software checks, not person-matting quality."
+}

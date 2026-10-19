@@ -27,10 +27,11 @@ class RVM:
         fgr, alpha, *self.states = self.session.run(['fgr','pha','r1o','r2o','r3o','r4o'], feeds)
         return np.clip(fgr[0].transpose(1,2,0)[:,:,::-1],0,1), np.clip(alpha[0,0],0,1)
 
-def composite(foreground, alpha, background):
+def composite(foreground, alpha, background, strength=1.0):
+    if not np.isfinite(strength) or not 0 <= strength <= 1: raise ValueError("strength must be in [0,1]")
     if foreground.shape != background.shape or alpha.shape != foreground.shape[:2]:
         raise ValueError('foreground, alpha and background dimensions must match')
-    a = np.clip(alpha,0,1)[...,None]
+    a = (1-strength*(1-np.clip(alpha,0,1)))[...,None]
     return np.clip(foreground*a + background*(1-a),0,1)
 
 def background_blur(frame, alpha, sigma=12):

@@ -1,0 +1,49 @@
+{
+  "input_matches": 300,
+  "pose_inliers": 300,
+  "points": 300,
+  "mean_reprojection_error_px": 1.996882439919566e-07,
+  "median_parallax_deg": 6.455012940186489,
+  "R_world_to_camera2": [
+    [
+      0.999550033715369,
+      -4.846193222508583e-11,
+      0.029995501322777895
+    ],
+    [
+      7.005397838580618e-11,
+      0.9999999999999994,
+      -7.188388821330456e-10
+    ],
+    [
+      -0.029995501322779238,
+      7.206167336152373e-10,
+      0.999550033715369
+    ]
+  ],
+  "t_world_to_camera2_unit_scale": [
+    1.0,
+    1.2627329438053225e-09,
+    5.461230296854613e-10
+  ],
+  "camera_centers": [
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      -0.9995500336989878,
+      -1.2142710119737815e-09,
+      -0.029995501868655187
+    ]
+  ],
+  "notes": [
+    "Two views only; scale is arbitrary.",
+    "Reprojection error uses fitting correspondences, not independent ground truth.",
+    "No bundle adjustment, SLAM, neural rendering or dense surface reconstruction."
+  ],
+  "synthetic": true,
+  "rotation_error_deg": 1.2074182697257333e-06,
+  "translation_direction_error_deg": 0.0
+}

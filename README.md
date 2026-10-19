@@ -2,10 +2,14 @@
 
 A working CPU video-matting pipeline for background blur and replacement, using pretrained Robust Video Matting (RVM). Built as a starting point for camera/video ML engineering experiments.
 
-## Status
-Implemented and tested: recurrent ONNX inference, scene-cut reset heuristic, independent-frame ablation, foreground-aware background blur, image replacement, lossless 16-bit alpha PNG export, per-stage p50/p95 timing, model checksum, and alpha evaluation. Seventeen numerical tests pass after building the native module. Real pretrained inference exported and decoded 20 frames successfully.
+## Run the new experiments
 
-Not completed: model fine-tuning, real-video labeled quality evaluation, depth estimation, motion-compensated temporal metrics, Swift/Core ML device application, Metal optimization, device energy/thermal testing. Do not describe this as trained, production-ready, or deployed on an iPhone. Real iPhone footage has been processed on a host CPU.
+See [RUN_EXPERIMENTS.md](RUN_EXPERIMENTS.md) for the Windows runner, training, labeled video evaluation, calibrated two-view reconstruction and the iOS source prototype. Synthetic checks have run; real-data quality and Apple device validation are still pending.
+
+## Status
+Implemented and tested: recurrent ONNX inference, scene-cut reset heuristic, independent-frame ablation, foreground-aware background blur, image replacement, lossless 16-bit alpha PNG export, per-stage p50/p95 timing, model checksum, and alpha evaluation. The expanded suite has 27 passing tests after building the native module. Real pretrained inference exported and decoded 20 frames successfully.
+
+Not completed: model fine-tuning, real-video labeled quality evaluation, depth estimation, motion-compensated temporal metrics, validated Swift/Core ML device application and Metal performance, device energy/thermal testing. Do not describe this as trained, production-ready, or deployed on an iPhone. Real iPhone footage has been processed on a host CPU.
 
 ## Setup (Python 3.10+)
 Run commands from this directory. Create and activate a Python virtual environment first.
