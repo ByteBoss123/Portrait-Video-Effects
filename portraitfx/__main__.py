@@ -10,6 +10,7 @@ def process(a):
         raise ValueError('input and output must differ')
     if a.width < 32 or a.warmup < 0: raise ValueError('width >=32 and warmup >=0 required')
     if not np.isfinite(a.strength) or not 0 <= a.strength <= 1: raise ValueError("strength must be in [0,1]")
+    cv2.setNumThreads(getattr(a,"opencv_threads",2))
     blend = composite
     if a.backend == 'cpp':
         from .native import composite_cpp, _library
@@ -50,13 +51,14 @@ def process(a):
             previous=thumb
             t2=time.perf_counter(); fgr,alpha=model.predict(frame,a.independent)
             t3=time.perf_counter()
-            background=bg if bg is not None else background_blur(frame,alpha)
+            background=bg if bg is not None else background_blur(frame,alpha,scale=getattr(a,"blur_scale",1.0))
+            tb=time.perf_counter()
             output=(blend(fgr,alpha,background,a.strength)*255).round().astype('uint8')
             t4=time.perf_counter(); writer.write(output)
             if a.alpha_dir:
                 cv2.imwrite(str(Path(a.alpha_dir)/f'{count:06d}.png'),(alpha*65535).round().astype('uint16'))
             t5=time.perf_counter()
-            timings.append([(t1-t0)*1000,(t2-t1)*1000,(t3-t2)*1000,(t4-t3)*1000,(t5-t4)*1000,(t5-t0)*1000])
+            timings.append([(t1-t0)*1000,(t2-t1)*1000,(t3-t2)*1000,(t4-t3)*1000,(t5-t4)*1000,(t5-t0)*1000,(tb-t3)*1000,(t4-tb)*1000])
             try:
                 if a.measure_memory:
                     memory.append(psutil.Process().memory_info().rss)
@@ -66,7 +68,7 @@ def process(a):
     finally:
         cap.release(); writer.release()
     stats=np.array(timings)
-    report={'effect_strength':a.strength,'compositing_backend':a.backend,'frames':count,'resolution':[width,height],'source_fps':fps,'warmup_frames':a.warmup,
+    report={'blur_scale':getattr(a,'blur_scale',1.0),'opencv_threads':cv2.getNumThreads(),'effect_strength':a.strength,'compositing_backend':a.backend,'frames':count,'resolution':[width,height],'source_fps':fps,'warmup_frames':a.warmup,
         'ratio':a.ratio,'independent_frames':a.independent,'scene_cut_resets':cuts,
         'platform':platform.platform(),'processor':platform.processor(),'cpu_threads':a.threads,
         'model_bytes':Path(a.model).stat().st_size,'model_sha256':hashlib.sha256(Path(a.model).read_bytes()).hexdigest(),
@@ -74,7 +76,7 @@ def process(a):
         'notes':['CPU only. RSS sampled after each frame, not true peak allocation.',
         'First frame decode excluded. Model load and warmup excluded. Encoder final flush excluded.',
         'Video output is silent. Blur is mask-based, not depth-based. No accuracy claim without ground truth.']}
-    for i,key in enumerate(['decode','preprocess','inference','composite','write','pipeline']):
+    for i,key in enumerate(['decode','preprocess','inference','composite','write','pipeline','background_blur','blend_and_quantize']):
         report['timing_ms'][key]={'p50':float(np.percentile(stats[:,i],50)),'p95':float(np.percentile(stats[:,i],95))}
     Path(a.report).parent.mkdir(parents=True,exist_ok=True)
     Path(a.report).write_text(json.dumps(report,indent=2))
@@ -100,6 +102,8 @@ def main():
     parser=argparse.ArgumentParser(description='Portrait video effects: CPU RVM inference and alpha evaluation')
     sub=parser.add_subparsers(dest='command',required=True)
     p=sub.add_parser('process')
+    p.add_argument('--blur-scale',type=float,default=1.0,help='Approximate blur at this spatial scale; compare quality before using')
+    p.add_argument('--opencv-threads',type=int,default=2)
     p.add_argument('--strength',type=float,default=1.0)
     p.add_argument('--backend', choices=['numpy','cpp'], default='numpy')
     for key in ['input','model','output']: p.add_argument('--'+key,required=True)

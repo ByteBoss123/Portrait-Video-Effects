@@ -1,0 +1,155 @@
+{
+  "task": "Residual alpha refiner trained on frozen independent-frame RVM; not RVM fine-tuning",
+  "synthetic": true,
+  "config": {
+    "manifest": "../portrait-video-effects/data/synthetic/manifest.json",
+    "model": "../models/rvm_mobilenetv3_fp32.onnx",
+    "output": "results/refiner_smoke",
+    "epochs": 2,
+    "size": 32,
+    "batch": 4,
+    "device": "cpu",
+    "seed": 42,
+    "allow_synthetic": true
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_l1": 0.12555550690740347,
+      "val_group_mae": 0.11857765663021524
+    },
+    {
+      "epoch": 2,
+      "train_l1": 0.12552685290575027,
+      "val_group_mae": 0.1185772268768659
+    }
+  ],
+  "test": {
+    "group_macro": {
+      "baseline": {
+        "mae": 0.12723523952351457,
+        "mse": 0.11568391237894676,
+        "boundary_band_mae": 0.41313095446279
+      },
+      "refined": {
+        "mae": 0.1272337462046096,
+        "mse": 0.11568388063652903,
+        "boundary_band_mae": 0.4131281149793826
+      }
+    },
+    "per_image": [
+      {
+        "group": "test_000",
+        "baseline": {
+          "mae": 0.1291503915750809,
+          "mse": 0.116900020906764,
+          "boundary_band_mae": 0.4235436940431206
+        },
+        "refined": {
+          "mae": 0.1291503915750809,
+          "mse": 0.116900020906764,
+          "boundary_band_mae": 0.4235436940431206
+        }
+      },
+      {
+        "group": "test_001",
+        "baseline": {
+          "mae": 0.22018325003512018,
+          "mse": 0.20585717140262424,
+          "boundary_band_mae": 0.4681247963014619
+        },
+        "refined": {
+          "mae": 0.22018325003512018,
+          "mse": 0.20585717140262424,
+          "boundary_band_mae": 0.4681247963014619
+        }
+      },
+      {
+        "group": "test_002",
+        "baseline": {
+          "mae": 0.1291503916442025,
+          "mse": 0.11690002092888435,
+          "boundary_band_mae": 0.42354369438671535
+        },
+        "refined": {
+          "mae": 0.1291503916442025,
+          "mse": 0.11690002092888435,
+          "boundary_band_mae": 0.42354369438671535
+        }
+      },
+      {
+        "group": "test_003",
+        "baseline": {
+          "mae": 0.21996687442003804,
+          "mse": 0.20395736493072875,
+          "boundary_band_mae": 0.4416521459485887
+        },
+        "refined": {
+          "mae": 0.21996687442003804,
+          "mse": 0.20395736493072875,
+          "boundary_band_mae": 0.4416521459485887
+        }
+      },
+      {
+        "group": "test_004",
+        "baseline": {
+          "mae": 0.12915039152642294,
+          "mse": 0.11690002088762183,
+          "boundary_band_mae": 0.423543693801248
+        },
+        "refined": {
+          "mae": 0.12915039152642294,
+          "mse": 0.11690002088762183,
+          "boundary_band_mae": 0.423543693801248
+        }
+      },
+      {
+        "group": "test_005",
+        "baseline": {
+          "mae": 0.03637312378191382,
+          "mse": 0.029887692852927528,
+          "boundary_band_mae": 0.3356118403025903
+        },
+        "refined": {
+          "mae": 0.03637312378191382,
+          "mse": 0.029887692852927528,
+          "boundary_band_mae": 0.3356118403025903
+        }
+      },
+      {
+        "group": "test_006",
+        "baseline": {
+          "mae": 0.0617637489893923,
+          "mse": 0.053303964823026934,
+          "boundary_band_mae": 0.38032913546526936
+        },
+        "refined": {
+          "mae": 0.0617637489893923,
+          "mse": 0.053303964823026934,
+          "boundary_band_mae": 0.38032913546526936
+        }
+      },
+      {
+        "group": "test_007",
+        "baseline": {
+          "mae": 0.09214374421594584,
+          "mse": 0.0817650422989964,
+          "boundary_band_mae": 0.4086986354533258
+        },
+        "refined": {
+          "mae": 0.09213179766470603,
+          "mse": 0.0817647883596546,
+          "boundary_band_mae": 0.408675919586067
+        }
+      }
+    ]
+  },
+  "split_counts": {
+    "train": 32,
+    "val": 8,
+    "test": 8
+  },
+  "manifest_sha256": "e8ca391a558abd482900b24bbd212bfc4c481d50c466e3e09238b4caacb41c1c",
+  "rvm_sha256": "88d4531297118f595bf2fd60f6f566aec2e559393802d1f436c380f0cbbd2828",
+  "note": "Validation selects checkpoint; test evaluated once afterward. Square resize changes aspect ratio. No temporal training or generalization claim. Synthetic circles software check only; no real portrait quality claim."
+}

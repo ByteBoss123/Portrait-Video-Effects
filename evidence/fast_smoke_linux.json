@@ -1,0 +1,61 @@
+{
+  "blur_scale": 0.25,
+  "opencv_threads": 2,
+  "effect_strength": 1.0,
+  "compositing_backend": "cpp",
+  "frames": 20,
+  "resolution": [
+    320,
+    320
+  ],
+  "source_fps": 10.0,
+  "warmup_frames": 3,
+  "ratio": 0.5,
+  "independent_frames": false,
+  "scene_cut_resets": 0,
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "processor": "x86_64",
+  "cpu_threads": 2,
+  "model_bytes": 14975696,
+  "model_sha256": "88d4531297118f595bf2fd60f6f566aec2e559393802d1f436c380f0cbbd2828",
+  "sampled_peak_process_rss_bytes": null,
+  "timing_ms": {
+    "decode": {
+      "p50": 0.3507450001052348,
+      "p95": 0.8316120498420795
+    },
+    "preprocess": {
+      "p50": 0.10293499872204848,
+      "p95": 0.332506650374854
+    },
+    "inference": {
+      "p50": 19.825804500214872,
+      "p95": 31.037476750316273
+    },
+    "composite": {
+      "p50": 1.8252105001010932,
+      "p95": 2.4763573524978715
+    },
+    "write": {
+      "p50": 0.7243634991027648,
+      "p95": 0.8768376012085356
+    },
+    "pipeline": {
+      "p50": 23.93417199891701,
+      "p95": 34.74301719888899
+    },
+    "background_blur": {
+      "p50": 0.692955998601974,
+      "p95": 0.9678730028099382
+    },
+    "blend_and_quantize": {
+      "p50": 1.1050579978473252,
+      "p95": 1.6676977029419506
+    }
+  },
+  "notes": [
+    "CPU only. RSS sampled after each frame, not true peak allocation.",
+    "First frame decode excluded. Model load and warmup excluded. Encoder final flush excluded.",
+    "Video output is silent. Blur is mask-based, not depth-based. No accuracy claim without ground truth."
+  ]
+}

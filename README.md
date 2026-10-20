@@ -130,3 +130,8 @@ compositing latency across three resolutions.
 Understand the buffer layout, pointer lifetime, C ABI and measurement scope
 before presenting this as your C++ experience. Model training and labeled-video
 quality evaluation remain future work.
+
+## Evidence upgrade
+
+See [UPGRADE_GUIDE.md](UPGRADE_GUIDE.md) for controlled timings, approximate blur,
+supervised refinement, CI and the outstanding real-data/device requirements.

@@ -1,0 +1,30 @@
+name: Native and Python tests
+on: [push, pull_request]
+jobs:
+  tests:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+      - run: python -m pip install -r requirements.txt
+      - run: python build_native.py
+      - run: python -m pytest -q
+  apple-source-check:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Type-check Swift for iOS Simulator
+        run: |
+          SDK=$(xcrun --sdk iphonesimulator --show-sdk-path)
+          xcrun swiftc -typecheck -swift-version 5 -sdk "$SDK" -target arm64-apple-ios15.0-simulator ios/PortraitCameraApp.swift
+      - name: Compile Metal shader
+        run: xcrun --sdk iphonesimulator metal -c ios/Blend.metal -o /tmp/Blend.air

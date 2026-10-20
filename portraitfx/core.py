@@ -34,12 +34,21 @@ def composite(foreground, alpha, background, strength=1.0):
     a = (1-strength*(1-np.clip(alpha,0,1)))[...,None]
     return np.clip(foreground*a + background*(1-a),0,1)
 
-def background_blur(frame, alpha, sigma=12):
+def background_blur(frame, alpha, sigma=12, scale=1.0):
+    if not 0 < scale <= 1 or sigma <= 0:
+        raise ValueError('blur scale must be in (0,1] and sigma positive')
+    if scale < 1:
+        h,w = alpha.shape
+        size = (max(2,round(w*scale)),max(2,round(h*scale)))
+        small = cv2.resize(frame,size,interpolation=cv2.INTER_AREA)
+        matte = cv2.resize(alpha,size,interpolation=cv2.INTER_AREA)
+        blurred = background_blur(small,matte,max(.1,sigma*scale))
+        return cv2.resize(blurred,(w,h),interpolation=cv2.INTER_LINEAR)
     # Normalized masked convolution reduces foreground color bleeding.
     weight = (1-alpha).astype(np.float32)
     den = cv2.GaussianBlur(weight,(0,0),sigma)
     num = cv2.GaussianBlur(frame.astype(np.float32)/255*weight[...,None],(0,0),sigma)
-    return np.where(den[...,None] > 1e-5, num/np.maximum(den[...,None],1e-5), frame/255)
+    return np.where(den[...,None] > 1e-5, num/np.maximum(den[...,None],1e-5), frame.astype(np.float32)/255)
 
 def alpha_metrics(pred, truth):
     if pred.shape != truth.shape or pred.ndim != 2:
