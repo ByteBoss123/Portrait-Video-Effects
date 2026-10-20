@@ -1,7 +1,8 @@
 """Train a residual alpha refiner on frozen RVM predictions and labeled images.
 This is supervised adaptation, not fine-tuning RVM weights or video training.
 """
-import argparse, hashlib, json
+import argparse, hashlib, json, platform
+from importlib.metadata import version
 from pathlib import Path
 import cv2
 import numpy as np
@@ -26,6 +27,7 @@ def main():
     p.add_argument('--size',type=int,default=128);p.add_argument('--batch',type=int,default=4)
     p.add_argument('--device',default='cpu');p.add_argument('--seed',type=int,default=42)
     p.add_argument('--allow-synthetic',action='store_true')
+    p.add_argument('--cache-samples',action='store_true',help='Cache resized RGB, alpha and frozen RVM predictions in CPU RAM')
     a=p.parse_args()
     if min(a.epochs,a.size,a.batch)<1: p.error('positive epochs, size and batch required')
     doc=load_manifest(a.manifest)
@@ -39,12 +41,17 @@ def main():
     torch.manual_seed(a.seed);torch.set_num_threads(2);cv2.setNumThreads(2)
     torch.use_deterministic_algorithms(True)
     rvm=RVM(a.model)
+    cache={}
     def sample(row):
+        key=row['image']
+        if key in cache: return cache[key]
         # Stream pairs rather than retaining the entire dataset on GPU.
         im,truth=read_pair(row,a.size)
         _,base=rvm.predict(im,independent=True)
         x=np.concatenate([im[:,:,::-1].astype(np.float32)/255,base[...,None]],axis=2)
-        return torch.from_numpy(x.transpose(2,0,1).copy()),torch.from_numpy(truth[None]),base
+        result=(torch.from_numpy(x.transpose(2,0,1).copy()),torch.from_numpy(truth[None]),base)
+        if a.cache_samples: cache[key]=result
+        return result
     model=Refiner().to(a.device)
     optim=torch.optim.Adam(model.parameters(),lr=1e-3)
     def evaluate(rows):
@@ -66,7 +73,11 @@ def main():
                     if vals:means.append(float(np.mean(vals)))
                 summary[mode][metric]=float(np.mean(means)) if means else None
         return dict(group_macro=summary,per_image=result)
-    history=[]; best=float('inf')
+    initial=evaluate(splits['val'])
+    best=initial['group_macro']['refined']['mae']
+    history=[dict(epoch=0,train_l1=None,val_group_mae=best)]
+    torch.save(dict(state_dict=model.state_dict(),size=a.size),out/'best.pt')
+    best_epoch=0
     for epoch in range(a.epochs):
         model.train(); losses=[]
         order=torch.randperm(len(splits['train'])).tolist()
@@ -82,12 +93,14 @@ def main():
         history.append(dict(epoch=epoch+1,train_l1=float(np.mean(losses)),val_group_mae=score))
         print(history[-1],flush=True)
         if score<best:
-            best=score
+            best=score; best_epoch=epoch+1
             torch.save(dict(state_dict=model.state_dict(),size=a.size),out/'best.pt')
     model.load_state_dict(torch.load(out/'best.pt',map_location=a.device,weights_only=True)['state_dict'])
     test=evaluate(splits['test'])
     report=dict(task='Residual alpha refiner trained on frozen independent-frame RVM; not RVM fine-tuning',
-        synthetic=bool(doc.get('synthetic',False)),config=vars(a),history=history,
+        synthetic=bool(doc.get('synthetic',False)),config=vars(a),history=history,best_epoch=best_epoch,
+        environment=dict(python=platform.python_version(),platform=platform.platform(),
+            packages={**{name:version(name) for name in ('numpy','torch','onnxruntime')},'opencv':cv2.__version__}),
         test=test,split_counts={k:len(v) for k,v in splits.items()},
         manifest_sha256=hashlib.sha256(Path(a.manifest).read_bytes()).hexdigest(),
         rvm_sha256=hashlib.sha256(Path(a.model).read_bytes()).hexdigest(),

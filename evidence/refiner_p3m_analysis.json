@@ -1,0 +1,151 @@
+{
+  "test_images": 64,
+  "mean_mae_reduction": 0.02111741290429812,
+  "relative_mae_reduction_percent": 14.960639746858188,
+  "improved_images": 50,
+  "worsened_images": 14,
+  "paired_image_bootstrap_95_percentile_interval": [
+    0.014407121452324131,
+    0.028560871579808453
+  ],
+  "bootstrap_seed": 42,
+  "bootstrap_resamples": 10000,
+  "decoded_exact_cross_split_duplicates": 0,
+  "identity_and_near_duplicates_audited": false,
+  "worst_refined_mae": [
+    {
+      "group": "testP_00154",
+      "baseline": {
+        "mae": 0.5715787383275615,
+        "mse": 0.5278843747843392,
+        "boundary_band_mae": 0.4863757826193366
+      },
+      "refined": {
+        "mae": 0.5330201910589136,
+        "mse": 0.4802722315069128,
+        "boundary_band_mae": 0.47945357830922447
+      }
+    },
+    {
+      "group": "testP_00162",
+      "baseline": {
+        "mae": 0.5644308455514659,
+        "mse": 0.5464945343290466,
+        "boundary_band_mae": 0.5124187519114486
+      },
+      "refined": {
+        "mae": 0.5133808567310858,
+        "mse": 0.4594472998905841,
+        "boundary_band_mae": 0.47142713297330885
+      }
+    },
+    {
+      "group": "testP_00180",
+      "baseline": {
+        "mae": 0.4726722297999002,
+        "mse": 0.41549667046201866,
+        "boundary_band_mae": 0.5029428335654698
+      },
+      "refined": {
+        "mae": 0.40935613788394265,
+        "mse": 0.3538891893294238,
+        "boundary_band_mae": 0.4776600767290535
+      }
+    },
+    {
+      "group": "testP_00278",
+      "baseline": {
+        "mae": 0.4724602867980825,
+        "mse": 0.41469041557462216,
+        "boundary_band_mae": 0.43344758629638735
+      },
+      "refined": {
+        "mae": 0.3915831142708941,
+        "mse": 0.30570186106488495,
+        "boundary_band_mae": 0.3732886406005085
+      }
+    },
+    {
+      "group": "testP_00156",
+      "baseline": {
+        "mae": 0.3720592277805939,
+        "mse": 0.3594186838930307,
+        "boundary_band_mae": 0.4080251522329905
+      },
+      "refined": {
+        "mae": 0.35817343601106727,
+        "mse": 0.3461841817404953,
+        "boundary_band_mae": 0.3987786465725846
+      }
+    }
+  ],
+  "largest_regressions": [
+    {
+      "group": "testP_00199",
+      "baseline": {
+        "mae": 0.024576412061113495,
+        "mse": 0.01278647672399816,
+        "boundary_band_mae": 0.11674574882006541
+      },
+      "refined": {
+        "mae": 0.03652558155745267,
+        "mse": 0.024158319810651387,
+        "boundary_band_mae": 0.18307543053157577
+      }
+    },
+    {
+      "group": "testP_00217",
+      "baseline": {
+        "mae": 0.11040162850028956,
+        "mse": 0.09823712931796781,
+        "boundary_band_mae": 0.4971584326351921
+      },
+      "refined": {
+        "mae": 0.12006155624297266,
+        "mse": 0.08715629843633027,
+        "boundary_band_mae": 0.4744028628241409
+      }
+    },
+    {
+      "group": "testP_00397",
+      "baseline": {
+        "mae": 0.10382317916190331,
+        "mse": 0.07117051681465845,
+        "boundary_band_mae": 0.3573295216902609
+      },
+      "refined": {
+        "mae": 0.10913312840111136,
+        "mse": 0.07070465547653379,
+        "boundary_band_mae": 0.31432807184007977
+      }
+    },
+    {
+      "group": "testP_00120",
+      "baseline": {
+        "mae": 0.011058503511454987,
+        "mse": 0.0038738854777787897,
+        "boundary_band_mae": 0.138980875388536
+      },
+      "refined": {
+        "mae": 0.016069973716431877,
+        "mse": 0.004146274460786085,
+        "boundary_band_mae": 0.16821571758354362
+      }
+    },
+    {
+      "group": "testP_00177",
+      "baseline": {
+        "mae": 0.020475308330637487,
+        "mse": 0.00975931820024699,
+        "boundary_band_mae": 0.16920647996887966
+      },
+      "refined": {
+        "mae": 0.024394811725382715,
+        "mse": 0.006852699654813528,
+        "boundary_band_mae": 0.16929301067138647
+      }
+    }
+  ],
+  "checkpoint_sha256": "51e4adf51b0755fbab3d3f7ad0ba8ab1680cd35acff84889c593f6e4a164b838",
+  "note": "Exploratory image-level bootstrap, not identity-clustered; fixed subset and single seed, no population-generalization claim."
+}

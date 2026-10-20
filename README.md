@@ -128,10 +128,14 @@ matting pipeline through ctypes; validated numerical parity and benchmarked
 compositing latency across three resolutions.
 
 Understand the buffer layout, pointer lifetime, C ABI and measurement scope
-before presenting this as your C++ experience. Model training and labeled-video
-quality evaluation remain future work.
+before presenting this as your C++ experience. Real labeled portrait training is documented in REAL_DATA.md. Labeled-video
+quality evaluation remains future work.
 
 ## Evidence upgrade
 
 See [UPGRADE_GUIDE.md](UPGRADE_GUIDE.md) for controlled timings, approximate blur,
 supervised refinement, CI and the outstanding real-data/device requirements.
+
+## Real labeled portrait experiment
+
+See [REAL_DATA.md](REAL_DATA.md) for the pinned P3M-10K subset, supervised residual-refiner protocol, reproducible commands, and measured limitations.

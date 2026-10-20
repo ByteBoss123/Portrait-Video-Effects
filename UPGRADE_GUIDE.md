@@ -64,12 +64,11 @@ python -m experiments.train_refiner --manifest data/portraits/manifest.json --mo
 The refiner starts at identity, learns alpha residuals using supervised L1 loss,
 selects checkpoints by validation group-macro MAE, and evaluates test once at the
 end against frozen RVM. Reports include MAE/MSE/boundary MAE, per-image results,
-model/manifest hashes and split counts. It streams images but recomputes RVM each
-epoch. Square resizing changes aspect ratio. RVM is frame-independent here.
+model/manifest hashes and split counts. It streams images by default; --cache-samples retains frozen predictions in CPU RAM. Square resizing changes aspect ratio. RVM is frame-independent here.
 The refiner.pt artifact takes RGB+baseline alpha as NCHW float32 at training size.
 It is experimental and not integrated into video/iOS inference. Improvement is
 not guaranteed. The synthetic smoke report is only a mechanics check, not evidence
-of real-person quality. No real-person training result has been completed here.
+of real-person quality. A real P3M-10K subset experiment is now complete; see REAL_DATA.md for measured results and limitations.
 
 For video quality run experiments.evaluate_video with a licensed paired held-out
 manifest, both recurrent and independent paths. See RUN_EXPERIMENTS.md for CLI.

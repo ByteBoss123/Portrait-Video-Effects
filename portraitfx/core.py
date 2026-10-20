@@ -2,6 +2,9 @@ import cv2
 import numpy as np
 import onnxruntime as ort
 
+# Keep local inference experiments free of optional runtime telemetry.
+ort.disable_telemetry_events()
+
 class RVM:
     def __init__(self, model, ratio=.5, threads=2):
         if not 0 < ratio <= 1:
